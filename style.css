@@ -115,3 +115,28 @@ body.dark-mode {
     background-color: #333;
     color: #fff;
 }
+
+/* Media query for mobile devices */
+@media only screen and (max-width: 768px) {
+    body {
+        font-size: 20px; /* Increase font size for mobile */
+    }
+
+    .container {
+        padding: 10px; /* Adjust padding for smaller screens */
+    }
+
+    .dropdown-button {
+        padding: 8px;
+    }
+
+    .dropdown-content a {
+        padding: 10px 14px;
+    }
+    .verse-display {
+        margin-top: 20px;
+        font-size: 30px;
+        line-height: 1.5em;
+        padding: 0px 20px;
+    }
+}
