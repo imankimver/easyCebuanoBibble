@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let bibleData = {};
     let currentBook = '';
     let currentChapter = '';
-    let areControlsVisible = true; // Flag to track the visibility of the controls
-    let isDarkMode = false; // Flag to track the dark mode state
+    let areControlsVisible = true;
+    let isDarkMode = false;
 
     async function loadBibleData() {
         try {
@@ -39,15 +39,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function hideControls() {
         document.querySelectorAll('.bottom-buttons, #verseInput').forEach(el => el.style.display = 'none');
-        document.querySelector('#booksDropdown').style.display = 'none'; // Hide books dropdown button
-        document.querySelector('#chaptersDropdown').style.display = 'none'; // Hide chapters dropdown button
+        document.querySelector('#booksDropdown').style.display = 'none';
+        document.querySelector('#chaptersDropdown').style.display = 'none';
         areControlsVisible = false;
     }
 
     function showControls() {
         document.querySelectorAll('.bottom-buttons, #verseInput').forEach(el => el.style.display = 'block');
-        document.querySelector('#booksDropdown').style.display = 'block'; // Show books dropdown button
-        document.querySelector('#chaptersDropdown').style.display = 'block'; // Show chapters dropdown button
+        document.querySelector('#booksDropdown').style.display = 'block';
+        document.querySelector('#chaptersDropdown').style.display = 'block';
         areControlsVisible = true;
     }
 
@@ -60,14 +60,13 @@ document.addEventListener("DOMContentLoaded", function() {
         currentIndex = 0;
         currentBook = book;
         currentChapter = chapter;
-        present(); // Call present function to display the first verse
+        present();
     }
 
     function displayChapters(book) {
         const chaptersContainer = document.getElementById("chaptersContainer");
-        chaptersContainer.innerHTML = ""; // Clear previous chapters
+        chaptersContainer.innerHTML = "";
 
-        // Check if the book exists in the bibleData object
         if (bibleData.hasOwnProperty(book)) {
             for (let chapter in bibleData[book]) {
                 let item = document.createElement("a");
@@ -75,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 item.href = "#";
                 item.onclick = async (e) => {
                     e.preventDefault();
-                    await fetchVerse(book, chapter, 1); // Default to first verse of the chapter
+                    await fetchVerse(book, chapter, 1);
                     chaptersContainer.classList.remove("show");
                     chaptersDropdown.innerText = `Chapter ${chapter}`;
                 };
@@ -140,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (selectedBook && selectedChapter && !isNaN(startVerse)) {
                 await fetchVerse(selectedBook, selectedChapter, startVerse);
-                showControls(); // Ensure controls are visible
+                showControls();
             } else {
                 console.error('Invalid input');
             }
@@ -153,12 +152,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-        nextButton.addEventListener('click', async () => {
-            if (currentBook && currentChapter) {
-                const startVerse = parseInt(startVerseInput.value) + 1;
-                await fetchVerse(currentBook, currentChapter, startVerse);
-                startVerseInput.value = startVerse;
-                showControls(); // Ensure controls are visible
+        nextButton.addEventListener('click', () => {
+            if (currentIndex < verses.length - 1) {
+                currentIndex++;
+                present();
             }
         });
 
@@ -177,14 +174,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (currentIndex < verses.length - 1) {
                     currentIndex++;
                     present();
-                } else {
-                    // Optionally handle moving to the next chapter if at the end of the current chapter
-                    if (currentBook && currentChapter) {
-                        const nextChapter = parseInt(currentChapter) + 1;
-                        if (bibleData[currentBook][nextChapter]) {
-                            fetchVerse(currentBook, nextChapter, 1);
-                        }
-                    }
                 }
             } else if (event.key === 'ArrowLeft') {
                 if (currentIndex > 0) {
@@ -203,5 +192,5 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    init(); // Call the init function to load data and set up event listeners
+    init();
 });
